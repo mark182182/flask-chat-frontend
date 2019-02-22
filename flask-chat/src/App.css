@@ -1,11 +1,15 @@
-.App {
-  text-align: center;
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+body {
+  font-family: "Roboto", monospace;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+li {
+  list-style: none;
+}
+
+.App {
+  text-align: center;
 }
 
 .App-header {
@@ -19,15 +23,91 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.chat-data {
+  padding: 20px;
+  border: medium dashed aquamarine;
+}
+
+.chat-window * {
+  color: #cecece;
+  text-align: justify;
+  font-size: 2.5vw;
+  margin-bottom: 0.4em;
+}
+
+.username-container {
+  display: flex;
+  justify-content: center;
+}
+
+.message-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.date-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.message-text {
+  color: #cecece;
+}
+
+#send-username-container *,
+#send-message-container * {
+  display: flex;
+  border: 0;
+  border-bottom: 2px solid aquamarine;
+  font-size: 30px;
+  line-height: 35px;
+  height: 70px;
+  text-align: center;
+  padding: 10px;
+  background: transparent;
+  color: #cecece;
+  margin-bottom: 40px;
+}
+
+#send-username-container *:focus,
+#send-message-container *:focus {
+  outline: 0;
+}
+
+a#submit-button {
+  display: inline-block;
+  padding: 0.5em 3em;
+  border: 0.16em solid aquamarine;
+  margin: 0 0 0.3em 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 400;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+a#submit-button:hover {
+  color: #dddddd;
+  border-color: #dddddd;
+}
+
+a#submit-button:active {
+  color: #bbbbbb;
+  border-color: #bbbbbb;
+}
+
+@media all and (max-width: 30em) {
+  a#submit-button {
+    display: block;
+    margin: 0.4em auto;
   }
 }
