@@ -10,7 +10,8 @@ class App extends Component {
       receivedMessages: [],
       username: '',
       message: '',
-      messageSent: { username: '', message: '' }
+      messageSent: { username: '', message: '' },
+      update: ''
     };
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
@@ -21,13 +22,8 @@ class App extends Component {
     this.loadMessages();
     const socket = socketIOClient('http://192.168.111.234:5000');
     socket.on('message', messageFromSocket => {
-      this.setState({ });
-      this.setState(state => {
-        state.receivedMessages[19][1] = messageFromSocket.username;
-        state.receivedMessages[19][2] = messageFromSocket.message;
-        state.receivedMessages[19][3] = new Date(Date.now()).toGMTString();
-      });      
-      console.log(this.state.receivedMessages[19]);    
+      this.renderMessageFromSocket();
+      console.log(this.state.receivedMessages[19]);
     })
   }
 
@@ -65,12 +61,22 @@ class App extends Component {
   }
 
   renderMessageFromSocket() {
+    this.setState({ update: 'updating' });
     this.setState(state => {
-      for (let index = 1; index < this.state.receivedMessages.length - 1; index++) {
-        state.receivedMessages[index][1] = state.receivedMessages[index - 1][1];
-        state.receivedMessages[index][2] = state.receivedMessages[index - 1][2];
-        state.receivedMessages[index][3] = state.receivedMessages[index - 1][3];
+      for (let index = 0; index < state.receivedMessages.length - 1; index++) {
+        let currentUsername = state.receivedMessages[index][1];
+        state.receivedMessages[index][1] = state.receivedMessages[index + 1][1];
+        state.receivedMessages[index + 1][1] = currentUsername;
+        let currentMessage = state.receivedMessages[index][2];
+        state.receivedMessages[index][2] = state.receivedMessages[index + 1][2];
+        state.receivedMessages[index + 1][2] = currentMessage;
+        let currentTimestamp = state.receivedMessages[index][3];
+        state.receivedMessages[index][3] = state.receivedMessages[index + 1][3];
+        state.receivedMessages[index + 1][3] = currentTimestamp;
       }
+      state.receivedMessages[19][1] = state.username;
+      state.receivedMessages[19][2] = state.message;
+      state.receivedMessages[19][3] = new Date(Date.now()).toGMTString();
     });
     console.log(this.state.receivedMessages);
   }
