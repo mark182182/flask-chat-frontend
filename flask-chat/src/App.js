@@ -3,6 +3,9 @@ import './App.css';
 import socketIOClient from "socket.io-client";
 
 class App extends Component {
+  host = process.env.REACT_APP_HOST_ADDRESS;
+  port = process.env.REACT_APP_HOST_PORT;
+  server = 'http://' + this.host + ':' + this.port;
 
   constructor(props) {
     super(props);
@@ -24,7 +27,7 @@ class App extends Component {
   }
 
   loadSocket() {
-    const socket = socketIOClient('http://192.168.111.241:5000');
+    const socket = socketIOClient(this.server);
     socket.on('message', messageFromSocket => {
       this.renderMessageFromSocket(messageFromSocket);
     });
@@ -32,7 +35,7 @@ class App extends Component {
 
   loadMessages() {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://192.168.111.241:5000/chat');
+    xhr.open('GET', this.server + '/chat');
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4 && xhr.status === 200) {
         this.setState({
@@ -54,12 +57,12 @@ class App extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    fetch('http://192.168.111.241:5000/message', {
+    fetch(this.server + '/message', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       mode: 'cors',
       body: JSON.stringify({ 'username': this.state.username, 'message': this.state.message })
-    }).then(response => console.log(response));
+    });
   }
 
   renderMessageFromSocket(messageFromSocket) {
@@ -81,7 +84,6 @@ class App extends Component {
       state.receivedMessages[19][3] = new Date(Date.now()).toGMTString();
     });
     this.forceUpdate();
-    console.log(this.state.receivedMessages);
   }
 
   render() {
